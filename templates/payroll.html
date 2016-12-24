@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="growl" id="app-growl"></div>
+
+<nav class="navbar navbar-inverse navbar-fixed-top app-navbar">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-main">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        <img src="/static/img/brand-white.png" alt="brand">
+      </a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-main">
+
+        <ul class="nav navbar-nav hidden-xs">
+          <li class="active">
+            <a href="/students/">Students</a>
+          </li>
+          <li>
+            <a href="/staff/">Staffing</a>
+          </li>
+          <li>
+            <a href="/payroll/">Payroll</a>
+          </li>
+          <li>
+            <a href="/schedule/">Schedule</a>
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right m-r-0 hidden-xs">
+          <!-- <li >
+            <a class="app-notifications" href="/notification/">
+              <span class="icon icon-bell"></span>
+            </a>
+          </li> -->
+          <li>
+          <a href="/administration/">
+            <button class="btn btn-success navbar-btn navbar-btn-avitar">
+            Logout
+            <!-- <img class="img-circle" src="/static/img/avatar-dhg.png"> -->
+            </button>
+          </a> 
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav hidden-sm hidden-md hidden-lg">
+          <li><a href="/students/">Students</a></li>
+          <li><a href="/staff/">Staffing</a></li>
+          <li><a href="/payroll/">Payroll</a></li>
+          <li><a href="/schedule/">Schedule</a></li>
+        </ul>
+      </div>
+  </div>
+</nav>
+<div class="docs-student" id="student">
+      <div class="box-table">
+      <form class="navbar-form app-search" role="search" method="GET" action="">
+          <!-- <div class="form-group"> -->
+            <input type="text" class="form-control" data-action="grow" placeholder="Search" name="q" value="{{request.GET.q}}">
+          <!-- </div> -->
+        </form>
+        <table class="table table-hover table-success" id="myTable">        
+  <thead>
+    <tr>
+      <th>Staff ID</th>
+      <th>Account Number</th>
+      <th>Contract Period</th>
+      <th>Monthly Salary</th>
+      <th>Annual Salary</th>
+      
+    </tr>
+  </thead>
+
+  <tbody>
+  {% for payroll in payrolls %}
+    <tr id="detail">
+      <td> <a href="/payrolldetails/{{ payroll.id }}"></a> {{ payroll.staff }}</td>
+      <td> <a href="/payrolldetails/{{ payroll.id }}"></a> {{ payroll.accountnumber }}</td>
+      <td> <a href="/payrolldetails/{{ payroll.id }}"></a> {{ payroll.contractperiod }}</td>
+      <td> <a href="/payrolldetails/{{ payroll.id }}"></a> {{ payroll.grossmonthlysalary }}</td> 
+      <td> <a href="/payrolldetails/{{ payroll.id }}"></a> {{ payroll.grossannualsalary }}</td>      
+      
+    </tr>
+  {% endfor %}
+  </tbody>
+</table> 
+
+    <div class="pagination">
+    <span class="step-links">
+        {% if payrolls.has_previous %}
+            <a href="?page={{ payrolls.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ payrolls.number }} of {{ payrolls.paginator.num_pages }}.
+        </span>
+
+        {% if payrolls.has_next %}
+            <a href="?page={{ payrolls.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
