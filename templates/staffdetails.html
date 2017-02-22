@@ -105,9 +105,14 @@
         </div>
       </div>
 
-      <div class="panel panel-default visible-md-block visible-lg-block">
-        <div class="panel-body">
-          <h5 class="m-t-0">About <small>· <a href="#">Edit</a></small></h5>
+      <div class="panel panel-default visible-md-block visible-lg-block" id="panel-background">
+        <div class="panel-body panel-color">
+          <div id="bottom-background">
+          <div class="top">
+                <h1>About</h1>
+                <div class="circle">{{ staff.firstName|make_list|first }}{{ staff.middleName|make_list|first }}{{ staff.lastName|make_list|first }}</div>
+              </div>
+          <div class="bottom"> 
           <ul class="list-unstyled list-spaced">
             <li><span class="text-muted icon icon-calendar m-r"></span>Qualification: <a href="#"> {{ staff.qualification }}</a>
             <li><span class="text-muted icon icon-users m-r"></span>Position: <a href="#">{{staff_position.departmentName}}</a>
@@ -115,38 +120,20 @@
             <li><span class="text-muted icon icon-home m-r"></span>License:  <a href="#">{{staff.licence}}</a>
             <li><span class="text-muted icon icon-location-pin m-r"></span>Birth Place: <a href="#">{{staff.placeOfBirth}}</a>
           </ul>
+          </div>
+          </div>
         </div>
       </div>
 
        <div class="panel panel-default visible-md-block visible-lg-block">
-        <div class="panel-body">
+        <div class="panel-body topdiv">
           <h5 class="m-t-0">Contract summary <small>· <a href="#">Edit</a></small></h5>
           <div data-grid="images" data-target-height="150">
-            <div>
+            <div >
                Account Number:  <a href="#">{{ salary.accountnumber }}</a><br>
                Gross Monthly Salary:  <a href="#">{{ salary.grossmonthlysalary }}</a><br>
                Contract Period:  <a href="#">{{ salary.contractperiod }} Months</a><br>
                Monthly Income Tax:  <a href="#">{{ salary.monthlyincometax }}</a>
-            </div>
-
-            <div>
-              <!-- <img data-width="640" data-height="640" data-action="zoom" src="/static/img/instagram_6.jpg"> -->
-            </div>
-
-            <div>
-              <!-- <img data-width="640" data-height="640" data-action="zoom" src="/static/img/instagram_7.jpg"> -->
-            </div>
-
-            <div>
-              <!-- <img data-width="640" data-height="640" data-action="zoom" src="/static/img/instagram_8.jpg"> -->
-            </div>
-
-            <div>
-              <!-- <img data-width="640" data-height="640" data-action="zoom" src="/static/img/instagram_9.jpg"> -->
-            </div>
-
-            <div>
-              <!-- <img data-width="640" data-height="640" data-action="zoom" src="/static/img/instagram_10.jpg"> -->
             </div>
           </div>
         </div>

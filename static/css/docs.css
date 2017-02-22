@@ -635,4 +635,81 @@ body {
   }
 }
 
+.bottom {
+margin-top:50px;
+  p {
+     font-size:13px;
+     font-family: 'Droid Serif', sans-serif;
+     padding:5px;
+    span {
+     font-weight:bold; 
+    }
+  }
+}
 
+#panel-background {
+  background-color: #5d4660;
+  @include filter-gradient(#5d4660, #f7eec7, vertical);
+  $experimental-support-for-svg: true;
+  @include background-image(linear-gradient(top, #5d4660    0%,#f7eec7 100%));
+}
+
+#bottom-background {
+  background-color:#ffffff;
+}
+
+.panel-color {
+  color:#989A8F;
+}
+
+.top {
+  background-color:#EAE9E4;
+  height:75px;
+  h1 {
+    padding-top:20px;
+  }
+}
+
+.topdiv {
+  background-color:#EAE9E4;
+  /*height:75px;*/
+  h1 {
+    padding-top:20px;
+  }
+}
+
+.circle {
+  width:60px;
+  height:60px;
+  border-radius:60px;
+  font-size:20px;
+  color:#fff;
+  line-height:60px;
+  text-align:center;
+  background:#989A8F;
+  margin-left:70px;
+  margin-top:10px;
+}
+
+.flat-table {
+  display: block;
+  font-family: sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 90%;
+  /*overflow: auto;*/
+  /*width: 20px;*/
+  }
+
+  .flat-table th {
+    background-color: #2980b9;
+    color: white;
+    font-weight: normal;
+    padding: 20px 30px;
+    text-align: center;
+  }
+
+  .flat-table td {
+    background-color: rgb(238, 238, 238);
+    color: rgb(111, 111, 111);
+    padding: 20px 30px;
+  }

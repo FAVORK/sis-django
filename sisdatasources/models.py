@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
+from django.db.models import F, Sum, Count
 
 
 GENDER_CHOICES = (
@@ -397,6 +398,12 @@ class Student(models.Model):
         blank=False
     )
 
+    users = models.ForeignKey(
+        User,
+        null=True,
+        blank=True
+    )
+
     class Meta:
         ordering = ["-id"]
 
@@ -672,6 +679,12 @@ class Staff(models.Model):
         blank=False
     )
 
+    users = models.ForeignKey(
+        User,
+        null=True,
+        blank=True
+    )
+
     created = models.DateTimeField(
         _('Date Created'),
         auto_now=True,
@@ -773,6 +786,10 @@ class Grade(models.Model):
 
     def __str__(self):
         return self.grade
+
+    @property
+    def totalstudent(self):
+        return Grade.objects.annotate(num_students=Count('student'))
 
 
 class Subject(models.Model):
@@ -932,8 +949,10 @@ class Payment(models.Model):
     def balance(self):
         if self.installment == "FIRST":
             return self.fee.totalannualfee - self.amount
-        # else:
-        #     return self.balance - self.amount
+
+    @property
+    def total(self):
+        return self.fee.totalannualfee - self.balance
 
 
 class Salarie(models.Model):

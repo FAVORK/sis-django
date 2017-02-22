@@ -3,6 +3,9 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
 # Register your models here.
+from blog.models import Blog
+from blog.models import Notification
+from Absent.models import Absent
 from .models import Registration
 from .models import Student
 from .models import Parent
@@ -42,7 +45,7 @@ class StudentModelAdmin(admin.ModelAdmin):
     list_display = ["studentID", "registration", "student_photo",
                     "previous_school", "previous_school_address",
                     "last_year_attendance", "level", "enrollment_status",
-                    "enrollment_Date", "created", "modified"]
+                    "enrollment_Date", "users", "created", "modified"]
     list_display_links = ["registration"]
     list_filter = ["enrollment_status", "previous_school"]
     search_fields = ["previous_school", "enrollment_Date"]
@@ -100,7 +103,7 @@ admin.site.register(Staff_Position, Staff_PositionModelAdmin)
 
 class GradeModelAdmin(admin.ModelAdmin):
     list_display = ["student", "grade", "sponsor", "totalNumberOfStudents",
-                    "created"]
+                    "totalstudent", "created"]
     list_display_links = ["grade"]
     list_filter = ["sponsor", "grade"]
     search_fields = ["sponsor", "grade"]
@@ -139,7 +142,7 @@ class PaymentModelAdmin(admin.ModelAdmin):
     list_display = ["ReceiptNo", "student", "fee", "installment",
                     "amount", "balance",
                     "digitalSignature",
-                    "transaction_Date", "created", "modified"]
+                    "transaction_Date", "total", "created", "modified"]
     list_display_links = ["student"]
     list_filter = ["installment", "amount"]
     search_fields = ["ReceiptNo"]
@@ -245,3 +248,43 @@ class UserAdmin(BaseUserAdmin):
 # Re-register UserAdmin
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+
+
+class BlogModelAdmin(admin.ModelAdmin):
+    list_display = ["title", "featurephotoone", "featurephototwo",
+                    "featurephotothree", "content",
+                    "emailorphone", "slug", "created", "modified"]
+    list_display_links = ["title"]
+    list_filter = ["title", "content"]
+    search_fields = ["title"]
+
+    class Meta:
+        model = Blog
+
+admin.site.register(Blog, BlogModelAdmin)
+
+
+class NotificationModelAdmin(admin.ModelAdmin):
+    list_display = ["eventtitle", "eventphoto", "eventcontent", "eventdate",
+                    "created", "modified"]
+    list_display_links = ["eventtitle"]
+    list_filter = ["eventcontent", "eventtitle"]
+    search_fields = ["eventtitle"]
+
+    class Meta:
+        model = Notification
+
+admin.site.register(Notification, NotificationModelAdmin)
+
+
+class AbsentModelAdmin(admin.ModelAdmin):
+    list_display = ["absentreason", "absentfrom", "absentto", "absentphoto",
+                    "created"]
+    list_display_links = ["absentreason"]
+    list_filter = ["absentreason"]
+    search_fields = ["absentreason"]
+
+    class Meta:
+        model = Absent
+
+admin.site.register(Absent, AbsentModelAdmin)

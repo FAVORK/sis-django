@@ -1,5 +1,9 @@
 from django.shortcuts import render_to_response
+
 from urllib import quote_plus
+from django.shortcuts import render, get_object_or_404, redirect
+from blog.models import Blog
+from blog.form import BlogForm
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -20,6 +24,7 @@ from .models import Subject
 from .models import Salarie
 from .models import Payment
 from .models import Payroll
+from .models import UserLog
 from .models import AcademicYear
 from .models import StudentMark
 from .models import ClassSchedule
@@ -74,7 +79,7 @@ def studentprofile(request):
 def login(request):
     c = {}
     # c.update(csrf_protect(request))
-    return render(request, 'login.html', c)
+    return render(request, 'profile.html', c)
 
 
 def auth_view(request):
@@ -94,22 +99,76 @@ def auth_view(request):
 
 
 def studentloggedin(request):
-    registration = Registration.objects.filter()
-    student = Student.objects.filter(registration=registration)
+    username = request.user.username
+    student = Student.objects.get(users=request.user)
+    try:
+        parent = Parent.objects.get(student=student)
+    except Parent.DoesNotExist:
+        parent = None
+    try:
+        payment = Payment.objects.filter(student=student)
+    except Payment.DoesNotExist:
+        payment = None
+    try:
+        academicyear = AcademicYear.objects.get(student=student)
+    except AcademicYear.DoesNotExist:
+        academicyear = None
+    try:
+        studentmark = StudentMark.objects.filter(student=student)
+    except StudentMark.DoesNotExist:
+        studentmark = None
+    try:
+        studentattendance = StudentAttendance.objects.filter(student=student).order_by('-day')
+    except StudentAttendance.DoesNotExist:
+        studentattendance = None
+    try:
+        gradedetails = Grade.objects.get(student=student)
+    except Grade.DoesNotExist:
+        gradedetails = None
+    # alluser = UserLog.objects.get(user=request.user),
     context = {
-        'registration': registration,
+        'username': username,
         'student': student,
-
+        'parent': parent,
+        'payment': payment,
+        'academicyear': academicyear,
+        'studentmark': studentmark,
+        'studentattendance': studentattendance,
+        'gradedetails': gradedetails,
     }
     return render(request, "studentloggedin.html", context)
 
 
 def blog(request):
-    template = loader.get_template('blog.html')
-    context = {
+    queryset_list = Blog.objects.all()  # .order_by("-record_added")
+    paginator = Paginator(queryset_list, 10)  # Show 25 contacts per page
 
+    page = request.GET.get('page')
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        queryset = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        queryset = paginator.page(paginator.num_pages)
+
+    context = {
+        "blog": queryset,
+        "title": "Blog Posts"
     }
-    return HttpResponse(template.render(context, request))
+    return render(request, "blog.html", context)
+
+
+def blog_detail(request, slug=None):
+    instance = get_object_or_404(Blog, slug=slug)
+    share_string = quote_plus(instance.title)
+    context = {
+        "title": instance.title,
+        "instance": instance,
+        "share_string": share_string
+    }
+    return render(request, "blog_detail.html", context)
 
 
 def administration(request):
